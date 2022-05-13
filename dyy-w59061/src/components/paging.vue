@@ -79,7 +79,6 @@ export default {
     blur2 () {
       this.cur = 1
       this.page(this.cur)
-      console.log('=====>', this.cur)
     },
     page (item) {
       this.cur = item // 当前页

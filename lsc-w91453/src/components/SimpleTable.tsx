@@ -75,7 +75,7 @@ export default defineComponent({
       }
     }
 
-    // 分页样式a
+    // 分页样式
     const pagination = {
         display: 'flex',
         listStyle:'none'

@@ -68,7 +68,8 @@ export default {
     }
   },
   created () {
-    this.conpages = Math.ceil(this.tableData.length / this.pageSize) // 求总页数，Math.ceil()方法 可以对数进行上舍入
+    // 计算有多少页
+    this.conpages = Math.ceil(this.tableData.length / this.pageSize)
     this.page(this.cur)
   },
   methods: {
@@ -82,15 +83,10 @@ export default {
     },
     page (item) {
       this.cur = item // 当前页
-      if (
-        this.cur === this.getShowPage[this.getShowPage.length - 1] &&
-        this.conpages > this.cur
-      ) {
+      // 如果当前页等于数组最后一项并且要不是最后一页
+      if (this.cur === this.getShowPage[this.getShowPage.length - 1] && this.conpages > this.cur) {
         for (let i = 0; i < this.getShowPage.length; i++) {
-          if (
-            this.conpages - this.getShowPage[this.getShowPage.length - 1] <
-            2
-          ) {
+          if (this.conpages - this.getShowPage[this.getShowPage.length - 1] < 2) {
             this.getShowPage[i] = this.getShowPage[i] + 1
           } else {
             this.getShowPage[i] = this.getShowPage[i] + 2

@@ -1,0 +1,12 @@
+.cell {
+    width: 200px;
+}
+
+/* 分页样式 */
+ul {
+    display: flex;
+    list-style: none;
+}
+li {
+  margin: 0 10px;
+}

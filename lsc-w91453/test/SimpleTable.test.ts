@@ -2,7 +2,11 @@ import { shallowMount } from "@vue/test-utils";
 import { expect, test } from "vitest";
 import SimpleTable from "../src/components/SimpleTable";
 
-const columns = ['ID', '名称']
+const columns = [
+  {name: 'ID', key: 'id', width: '100px', isSort: true},
+  {name: '姓名', key: 'name', width: '100px', isSort: true},
+  {name: '说明', key: 'info', width: '300px', isSort: false},
+]
 const list = [
   {id: 1, name: '姓名'},
   {id: 2, name: '姓名'},

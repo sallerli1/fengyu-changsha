@@ -1,3 +1,16 @@
+export function DataSort (columns: [], list: []) {
+    const dataList = () => {
+        return list.length ? list.map(item => {
+            return columns.map(col => {
+                return item[col.key]
+            })
+        }): []
+    }
+    return {
+        dataList
+    }
+}
+
 const max = 7;
 
 export function pagination () {

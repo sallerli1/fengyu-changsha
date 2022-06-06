@@ -1,4 +1,30 @@
-import { ref, unref, watch } from 'vue';
+import { ref, unref, watch, computed } from 'vue';
+
+export function useTable (data: any, type: any) {
+    const showData = computed(() =>{
+        const list = unref(data)
+        return list
+    })
+
+    const compare = (key: string) => {
+        return function(a: any, b: any){
+            return type.value === 1 ? a[key] - b[key] : b[key] - a[key];	
+        }
+    }
+    const handleSort = (item: string) => {
+        if (type.value === 2) {
+            type.value = 0;
+            data.value = JSON.parse(JSON.stringify(showData.value));
+            return;
+        }
+        type.value++;
+        data.value.sort(compare(item));
+    }
+    return {
+        showData,
+        handleSort
+    }
+}
 
 const max = 7;
 
@@ -6,13 +32,11 @@ export function pagination (currNum: number, size: number, totalNum: number, emi
     const curr = unref(currNum)
     const pageSize = unref(size);
     const total = Math.ceil(unref(totalNum) / pageSize);
-    console.log(pageSize, total)
     const currentPage = ref(1);
     let list = [];
     // 生成页码数据
     const getPageList =  () => {
         list = [];
-        console.log(total)
         if(total < max) {
             for(var r = 1; r < total + 1; r++) {
                 list.push(r);
@@ -46,21 +70,21 @@ export function pagination (currNum: number, size: number, totalNum: number, emi
         }
         currentPage.value++
     }
-
+    
+    // 跳转至某一页
     const pageJump = (num: number) => {
-        console.log(num)
-        if (!isNaN(num) && list.indexOf(num)) {
+        if (!isNaN(num)) {
             currentPage.value = num
         }
     }
 
-    const pageChange = () => {
-        console.log('change')
+    // 页码发生变化时触发
+    const pageChange = (page: number | string) => {
+        emit('pageChange', page.value);
     }
 
     watch(currentPage, () =>
-        // pageChange()
-        emit('page-change')
+        pageChange(currentPage)
     )
     return {
         currentPage,

@@ -1,7 +1,7 @@
-import { defineComponent, reactive, ref, toRef, toRefs } from "vue";
+import { defineComponent, computed, ref, toRefs } from "vue";
 import { type TableProps, tableProps } from "./types";
-import { pagination } from './index'
 import Pagination from './Pagination'
+import { useTable } from './index';
 import './style.css';
 
 interface tableRow {
@@ -14,27 +14,15 @@ export default defineComponent({
   setup(props: TableProps, { attrs, emit, slots }) {
     // 表头数据
     const { columns, data, pagination } = toRefs(props);
-  
-    // 存储表格备份数据
-    const backUpsList = JSON.parse(JSON.stringify(props.data));
 
     // 排序方法，type：0无序 1正序 2逆序
     const type = ref(0);
-    const handleSort = (item: string) => {
-      if (type.value === 2) {
-        type.value = 0;
-        data.value = backUpsList;
-        return;
-      }
-      type.value++;
-      data.value.sort(compare('id'));
-    }
+    
+    const { showData, handleSort } = useTable(data, type)
 
-    // 排序
-    const compare = (key: string) => {
-      return function(a: any, b: any){
-        return type.value === 1 ? a[key] - b[key] : b[key] - a[key];	
-      }
+    // 页码发生变化时触发
+    const pageChange = (page: number) => {
+      emit('pageChange', page)
     }
     
     return () => {
@@ -53,7 +41,7 @@ export default defineComponent({
                   {
                     columns.value.map(item => {
                       return <th 
-                        class="cell" onClick={handleSort.bind(this,item)}
+                        class="cell" onClick={handleSort.bind(this,item.key)}
                       >
                         <span>{item.name}</span>
                         <span v-show={item.isSort} id="sort">{Number(type.value) === 0 ? ' 无序' : Number(type.value) === 1 ? ' 正序' : ' 倒序'}</span>
@@ -64,7 +52,7 @@ export default defineComponent({
             </thead>
             <tbody>
               {
-                data.value.map((item, index) => {
+                showData.value.map((item, index) => {
                   return <tr>
                     {
                       columns.value.map(col => {
@@ -76,7 +64,7 @@ export default defineComponent({
               }
             </tbody>
           </table>
-          <Pagination {...pagination.value} />
+          <Pagination {...pagination.value} onPageChange={pageChange} />
         </div>
       );
     };

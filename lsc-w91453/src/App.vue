@@ -2,8 +2,7 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import SimpleTable from "./components/SimpleTable";
-import { reactive } from "vue";
-import Pagination from './components/Pagination'
+import { reactive, toRefs } from "vue";
 
 interface ColumnsItem {
   key: string;
@@ -25,6 +24,9 @@ const columns = reactive<ColumnsItem[]>([
   {name: '说明', key: 'info', width: '300px', isSort: false},
 ])
 
+const size = 10;
+const total = 50;
+
 // 生成指定长度的数组
 const creatData = (size: number) => {
   const data = Array.from({length: size}, () => {
@@ -38,23 +40,26 @@ const creatData = (size: number) => {
   return reactive(data)
 }
 
-// 表格数据
-const list = reactive<tableItem[]>(creatData(12));
+const list = creatData(size);
 
-const pagination = reactive({
-  pageSize: 10,
-  currentPage: 1,
-  total: list.length
+// 表格数据集合
+const dataSource = reactive({
+  columns,
+  list,
+  pagination: {
+    pageSize: size,
+    currentPage: 1,
+    total
+  }
 })
-console.log(pagination,'-----')
 
-const pageChange = () => {
-  console.log('00000')
+const pageChange = (page: number) => {
+  dataSource.list = creatData(size);
 }
 </script>
 
 <template>
-  <SimpleTable :data="list" :columns="columns" :pagination="pagination" @pageChange="pageChange" />
+  <SimpleTable :data="dataSource.list" :columns="dataSource.columns" :pagination="dataSource.pagination" @pageChange="pageChange" />
   <!-- <Pagination /> -->
 </template>
 

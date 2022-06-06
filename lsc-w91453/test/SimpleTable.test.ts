@@ -1,28 +1,73 @@
 import { shallowMount } from "@vue/test-utils";
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import SimpleTable from "../src/components/SimpleTable";
+import Pagination from "../src/components/Pagination";
 
 const columns = [
   {name: 'ID', key: 'id', width: '100px', isSort: true},
   {name: '姓名', key: 'name', width: '100px', isSort: true},
   {name: '说明', key: 'info', width: '300px', isSort: false},
 ]
-const list = [
-  {id: 1, name: '姓名'},
-  {id: 2, name: '姓名'},
-  {id: 3, name: '姓名3'},
-  {id: 7, name: '姓名'},
-  {id: 5, name: '姓名'},
-  {id: 6, name: '姓名'},
-]
-test("mount component", () => {
-  const wrapper = shallowMount(SimpleTable, {
+// 生成指定长度的数组
+const creatData = (size: number) => {
+  const data = Array.from({length: size}, () => {
+    const num = parseInt(String(100 * Math.random()), 10);
+    return {
+      id: num,
+      name: '人物'+ num,
+      info: '说明内容'
+    }
+  });
+  return data
+}
+
+const list = creatData(10)
+
+const baseInit = (type: string) => {
+  return shallowMount(SimpleTable, {
     props: {
       data: list,
-      columns
+      columns,
+      pagination: {
+        pageSize: 10,
+        currentPage: 1,
+        total: 42
+      }
     },
+  })
+};
+
+const wrapper = baseInit('SimpleTable');
+describe("base test", () => {
+  test("mount component", async () => {
+    expect(wrapper.html()).toMatchSnapshot();
+  const sortbtn = wrapper.findAll('#sort');
+  await sortbtn[0].trigger('click');
+  expect(wrapper.find('#sort').element.textContent).toBe('正序');
+  await sortbtn[0].trigger('click');
+  expect(wrapper.find('#sort').element.textContent).toBe('逆序');
   });
 
-  expect(wrapper.html()).toMatchSnapshot();
-});
+  test("pagination component", async () => {
+    const paginationCom = wrapper.findComponent(Pagination);
+    const pages = paginationCom.findAll(".li-item");
+    // 初始化 默认第一页
+    expect(paginationCom.find('.li-item_active').element.textContent).toBe('1');
+    // 点击页码第二页
+    await pages[1].trigger('click');
+    expect(paginationCom.find('.li-item_active').element.textContent).toBe('2');
+    // 点击上一页
+    const pagepre = paginationCom.findAll(".li-pre");
+    await pagepre[0].trigger('click');
+    expect(paginationCom.find('.li-item_active').element.textContent).toBe('1');
+    // 点击下一页
+    const pagenext = paginationCom.findAll(".li-next");
+    await pagenext[0].trigger('click');
+    expect(paginationCom.find('.li-item_active').element.textContent).toBe('2');
+    // 跳转页吗
+    const pagejump = paginationCom.find('input');
+    await pagejump.setValue('3');
+    expect(paginationCom.find('.li-item_active').element.textContent).toBe('3');
+  })
+})
 

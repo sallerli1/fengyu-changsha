@@ -19,7 +19,7 @@ export default defineComponent({
         return () => (
             <ul class="pagination">
                 <li>共{ total?.value }条</li>
-                <li onClick={prev}>上一页</li>
+                <li class="li-pre" onClick={prev}>上一页</li>
                 {
                     pageList.map(item => {
                         return <li
@@ -28,7 +28,7 @@ export default defineComponent({
                         >{item}</li>
                     })
                 }
-                <li onClick={next}>下一页</li>
+                <li class="li-next" onClick={next}>下一页</li>
                 <li class="li-item">
                     <span>跳转至：</span>
                     <input class="input-number" type="number" v-model={jumpNumber.value} onKeydown={pageJump.bind(this, jumpNumber.value)} />

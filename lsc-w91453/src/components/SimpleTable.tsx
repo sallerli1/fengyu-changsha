@@ -1,13 +1,9 @@
 import { defineComponent, computed, ref, toRefs } from "vue";
-import { type TableProps, tableProps } from "./types";
+import { type TableProps,  tableProps } from "./types/index";
 import Pagination from './Pagination'
-import { useTable } from './index';
-import './style.css';
+import { useTable } from './hooks/table';
+import './style/index.css';
 
-interface tableRow {
-  id: number;
-  name: string;
-}
 export default defineComponent({
   name: "SimpleTable",
   props: tableProps,
@@ -52,7 +48,7 @@ export default defineComponent({
             </thead>
             <tbody>
               {
-                showData.value.map((item, index) => {
+                showData.value.map((item: any) => {
                   return <tr>
                     {
                       columns.value.map(col => {

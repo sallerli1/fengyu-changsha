@@ -60,7 +60,6 @@ const pageChange = (page: number) => {
 
 <template>
   <SimpleTable :data="dataSource.list" :columns="dataSource.columns" :pagination="dataSource.pagination" @pageChange="pageChange" />
-  <!-- <Pagination /> -->
 </template>
 
 <style>

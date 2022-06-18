@@ -1,12 +1,12 @@
 import { defineComponent, toRefs, unref, Ref, ref } from "vue";
-import { type PaginationProps, paginationProps } from "./types";
-import { pagination } from './index';
-import './style.css'
+import { type PaginationProps, paginationProps } from "./types/index";
+import { usePagination } from './hooks/pagination';
+import './style/index.css'
 export default defineComponent({
     name: "Pagination",
     props: paginationProps,
     setup(props: PaginationProps, { attrs, emit, slots }) {
-        const jumpNumber = ref(null);
+        const jumpNumber = ref(0);
         const { currentPage: propsCurrentPage, pageSize: propsPageSize, total } = toRefs(props);
         const {
             currentPage,
@@ -14,7 +14,7 @@ export default defineComponent({
             prev,
             next,
             pageJump
-        } = pagination(propsCurrentPage, propsPageSize, total, emit);
+        } = usePagination(propsCurrentPage, propsPageSize, total, emit);
         
         return () => (
             <ul class="pagination">

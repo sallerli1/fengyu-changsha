@@ -41,11 +41,11 @@ const wrapper = baseInit('SimpleTable');
 describe("base test", () => {
   test("mount component", async () => {
     expect(wrapper.html()).toMatchSnapshot();
-  const sortbtn = wrapper.findAll('#sort');
-  await sortbtn[0].trigger('click');
-  expect(wrapper.find('#sort').element.textContent).toBe('正序');
-  await sortbtn[0].trigger('click');
-  expect(wrapper.find('#sort').element.textContent).toBe('逆序');
+    const sortbtn = wrapper.findAll('#sort');
+    await sortbtn[0].trigger('click');
+    expect(wrapper.find('#sort').element.textContent).toBe(' 正序');
+    await sortbtn[0].trigger('click');
+    expect(wrapper.find('#sort').element.textContent).toBe(' 倒序');
   });
 
   test("pagination component", async () => {

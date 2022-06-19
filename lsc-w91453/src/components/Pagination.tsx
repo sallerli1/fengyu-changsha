@@ -18,7 +18,7 @@ export default defineComponent({
         
         return () => (
             <ul class="pagination">
-                <li>共{ total?.value }条</li>
+                <li id="total">共{ total?.value }条</li>
                 <li class="li-pre" onClick={prev}>上一页</li>
                 {
                     pageList.map(item => {

@@ -11,8 +11,8 @@ export default defineComponent({
     // 表头数据
     const { columns, data, pagination } = toRefs(props);
 
-    // 排序方法，type：0无序 1正序 2逆序
-    const type = ref(0);
+    // 排序方法，type：无序 ASC正序 DESC逆序
+    const type = ref('');
     
     const { showData, handleSort } = useTable(data, type)
 
@@ -37,10 +37,10 @@ export default defineComponent({
                   {
                     columns.value.map(item => {
                       return <th 
-                        class="cell" onClick={handleSort.bind(this,item.key)}
+                        class="cell" onClick={handleSort.bind(this,item.key, type.value)}
                       >
                         <span>{item.name}</span>
-                        <span v-show={item.isSort} id="sort">{Number(type.value) === 0 ? ' 无序' : Number(type.value) === 1 ? ' 正序' : ' 倒序'}</span>
+                        <span v-show={item.isSort} id="sort">{type.value === '' ? ' 无序' : type.value === 'ASC' ? ' 正序' : ' 倒序'}</span>
                       </th>
                     })
                   }

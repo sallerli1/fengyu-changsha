@@ -1,6 +1,7 @@
 import { PropType, ExtractPropTypes } from "vue";
 
 export interface ColumnsItem {
+    id?: number | string,
     key: string,
     name: string,
     width?: number | string,
@@ -11,12 +12,12 @@ export interface Pagination {
     currentPage?: number,
     pageSize?: number,
     total: number,
-  }
+}
 
 //  定义 Props
 export const tableProps = {
     data: {
-        type: Array,
+        type: Array as PropType<ColumnsItem[]>,
         default: () => [],
     },
     columns: {

@@ -2,6 +2,8 @@ import { mount, shallowMount } from "@vue/test-utils";
 import { describe, expect, test } from "vitest";
 import SimpleTable from "../src/components/SimpleTable";
 import Pagination from "../src/components/Pagination";
+import { usePagination } from '../src/components/hooks/pagination';
+import { ref } from 'vue';
 
 const columns = [
   {name: 'ID', key: 'id', width: '100px', isSort: true},
@@ -40,39 +42,48 @@ const baseInit = (type) => {
 const wrapper = baseInit(SimpleTable);
 describe("base test", () => {
   test("mount component", async () => {
-    setTimeout(async () => {
-      expect(wrapper.html()).toMatchSnapshot();
-      const sortbtn = wrapper.findAll('#sort');
-      await sortbtn[0].trigger('click');
-      expect(wrapper.find('#sort').element.textContent).toBe(' 正序');
-      await sortbtn[0].trigger('click');
-      expect(wrapper.find('#sort').element.textContent).toBe(' 倒序');
-    }, 1000)
+    expect(wrapper.html()).toMatchSnapshot();
+    const sortbtn = wrapper.findAll('#sort');
+    await sortbtn[0].trigger('click');
+    expect(wrapper.find('#sort').element.textContent).toBe(' 正序');
+    await sortbtn[0].trigger('click');
+    expect(wrapper.find('#sort').element.textContent).toBe(' 倒序');
+    await sortbtn[0].trigger('click');
+    expect(wrapper.find('#sort').element.textContent).toBe(' 无序');
     
   });
 
   test("pagination component", async () => {
-    setTimeout(async () => {
-      const paginationCom = wrapper.findComponent(Pagination);
-      const pages = paginationCom.findAll(".li-item");
-      // 初始化 默认第一页
-      expect(paginationCom.find('#total').element.textContent).toBe('共42条');
-      expect(paginationCom.find('.li-item_active').element.textContent).toBe('1');
-      // 点击页码第二页
-      await pages[1].trigger('click');
-      expect(paginationCom.find('.li-item_active').element.textContent).toBe('2');
-      // 点击上一页
-      const pagepre = paginationCom.findAll(".li-pre");
-      await pagepre[0].trigger('click');
-      expect(paginationCom.find('.li-item_active').element.textContent).toBe('1');
-      // 点击下一页
-      const pagenext = paginationCom.findAll(".li-next");
-      await pagenext[0].trigger('click');
-      expect(paginationCom.find('.li-item_active').element.textContent).toBe('2');
-      // 跳转页码
-      const pagejump = paginationCom.find('input');
-      await pagejump.setValue('3');
-      expect(paginationCom.find('.li-item_active').element.textContent).toBe('3');
-      }, 200)    
+    // 测试分页方法
+    const current = ref(1);
+    const size = ref(10);
+    const total = ref(100);
+    const {
+      currentPage,
+      pageList,
+      prev,
+      next,
+      pageJump
+    } = usePagination(current, size, total, null);
+    expect(currentPage.value).toBe(1);
+    expect(pageList.length).toBe(6);
+    await prev();
+    expect(currentPage.value).toBe(1);
+    await next();
+    expect(currentPage.value).toBe(2);
+    await pageJump(3);
+    expect(currentPage.value).toBe(3);
+    // 测试分页显示
+    const paginationCom = shallowMount(Pagination, {
+      props: {
+        pageSize: 10,
+        currentPage: 1,
+        total: 42
+      }
+    });
+    const pages = paginationCom.findAll(".li-item");
+    // // 初始化 默认第一页
+    expect(paginationCom.find('#total').element.textContent).toBe('共42条');
+    expect(paginationCom.find('.li-item_active').element.textContent).toBe('1');
   })
 })

@@ -10,9 +10,11 @@ export function usePagination(
 ) {
     const curr = unref(currNum) ?? 1;
     const _pageSize = ref(10);
+    // 获取分页大小
     const pageSize = computed(() => {
         return unref(size) ?? _pageSize.value;
     });
+    // 获取总分页数
     const num = computed(() => {
         return unref(Math.ceil(unref(totalNum) / unref(pageSize)))
     });
@@ -68,6 +70,7 @@ export function usePagination(
         emit('pageChange', page.value);
     }
 
+    // 监听分页变化
     watch(currentPage, () =>
         pageChange(currentPage)
     )

@@ -33,6 +33,7 @@ const creatData = (size: number) => {
     const num = parseInt(String(100 * Math.random()), 10);
     return {
       id: num,
+      key: 'id',
       name: '人物'+ num,
       info: '说明内容'
     }

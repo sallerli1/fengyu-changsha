@@ -17,33 +17,28 @@ exports[`base test > mount component 1`] = `
     </thead>
     <tbody>
       <tr>
-        <td>63</td>
-        <td>人物63</td>
+        <td>99</td>
+        <td>人物99</td>
         <td>说明内容</td>
       </tr>
       <tr>
-        <td>92</td>
-        <td>人物92</td>
+        <td>38</td>
+        <td>人物38</td>
         <td>说明内容</td>
       </tr>
       <tr>
-        <td>88</td>
-        <td>人物88</td>
+        <td>55</td>
+        <td>人物55</td>
         <td>说明内容</td>
       </tr>
       <tr>
-        <td>88</td>
-        <td>人物88</td>
+        <td>76</td>
+        <td>人物76</td>
         <td>说明内容</td>
       </tr>
       <tr>
-        <td>84</td>
-        <td>人物84</td>
-        <td>说明内容</td>
-      </tr>
-      <tr>
-        <td>54</td>
-        <td>人物54</td>
+        <td>26</td>
+        <td>人物26</td>
         <td>说明内容</td>
       </tr>
       <tr>
@@ -52,18 +47,23 @@ exports[`base test > mount component 1`] = `
         <td>说明内容</td>
       </tr>
       <tr>
-        <td>60</td>
-        <td>人物60</td>
+        <td>41</td>
+        <td>人物41</td>
         <td>说明内容</td>
       </tr>
       <tr>
-        <td>5</td>
-        <td>人物5</td>
+        <td>73</td>
+        <td>人物73</td>
         <td>说明内容</td>
       </tr>
       <tr>
-        <td>32</td>
-        <td>人物32</td>
+        <td>16</td>
+        <td>人物16</td>
+        <td>说明内容</td>
+      </tr>
+      <tr>
+        <td>93</td>
+        <td>人物93</td>
         <td>说明内容</td>
       </tr>
     </tbody>
